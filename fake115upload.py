@@ -6,19 +6,19 @@ import urllib2, urllib, cookielib
 import requests
 from requests_toolbelt.multipart.encoder import MultipartEncoder 
 import json
-#############################################################   need configure
-user_id="1231904"
-userkey="1CBCB81CA63E48F7BF7650D15863562CC41E37B9".upper()
+############################################################################### Need your cookie
 COOKIES={}
-COOKIESTEXT="115_lang=zh; OOFL=1231904; UID=1231904_A1_1556868230; CID=7123c9eeeee13fa29b5eba87c56c39418; SEID=1231231234f690a29885bbe6677f2bea2827eb0e129d797703b45c09445367f81e65be9ba475cae9a5518cb3b6e62dc5ae4541166d7684; last_video_volume=100"
-################################################################
+COOKIESTEXT="115_lang=zh; OOFL=51051904; UID=51051904_A1_1556868230; CID=73c21c9efe13fa29b5eba87c56c39418; SEID=e04613b1514f615772f4f690a29885bbe6677f2bea2827eb0e129d797703b45c09445367f81e65be9ba475cae9a5518cb3b6e62dc5ae4541166d7684; last_video_volume=100"
+############################################################################### Need your cookie
+user_id=""
+userkey=""
 target="U_1_0"
 end_string="000000"
 app_ver='11.2.0'
 pickcode=""
 header = { "User-Agent" : 'Mozilla/5.0  115disk/11.2.0'}
 linksfile="115links.txt"
-##############################################################
+################################################################################
 def int_overflow(val):
     maxint = 2147483647
     if not -maxint-1 <= val <= maxint:
@@ -46,6 +46,7 @@ def  build_hash(a):
 	return v1
    
 def dha(a):
+
 	v0 =[0]*len(a)*8
 	for i in range(0,len(v0),8):
 		v1=i>>5
@@ -149,11 +150,10 @@ def dhe(a):
 
 def get_signature (s):
 	return build_hash(dhaa(dha(s), len(s) * 8))
-#print "Signature:",sig
 
 ############################################################################################################
 def Upload_files_by_sha1_from_links(filename):  #link sample : 1.mp4|26984894148|21AEB458C98643D5E5E4374C9D2ABFAAA4C6DA6
-	read_userkey_from_ini('config.ini')
+	GetUserKey()
 	for l in open(filename,'r'):
 		link=l.split('|')
 		filename=link[0]
@@ -182,16 +182,17 @@ def Upload_files_by_sha1_from_links(filename):  #link sample : 1.mp4|26984894148
 		r = requests.post(URL, data=postData,headers=header)
 		print(r.text)
 
-def read_userkey_from_ini(inifile):
-	global user_id,userkey
-	if os.path.exists(inifile):
-		for l in open(inifile,'r'):
-			info=l.split('=')
-			if(info[0]=='user_id'):user_id=info[1].strip()
-			if(info[0]=='userkey'):userkey=info[1].strip().upper()
 
 def GetFileSize(file):
 	return os.path.getsize(file)
+
+def GetUserKey():
+	global user_id,userkey
+	AddCookie(COOKIESTEXT)
+	r = requests.get("http://proapi.115.com/app/uploadinfo",headers=header,cookies=COOKIES)
+	resp=json.loads(r.content) 
+	user_id=str(resp['user_id'])
+	userkey=str(resp['userkey']).upper()
 
 def AddCookie(cook):
 	for line in COOKIESTEXT.split(';'):   
@@ -199,6 +200,7 @@ def AddCookie(cook):
 		COOKIES[name]=value 
 
 def Upload_file_by_sha1(fileid,filesize,filename):  #quick
+	GetUserKey()
 	fileid=fileid.upper()
 	quickid=fileid
 	hash=get_signature(user_id+fileid+quickid+pickcode+target+'0')
@@ -241,7 +243,6 @@ def Upload_file_from_local(filename):  #slow
 	r = requests.post(resp['host'],headers=req_headers,data=m)
 	print r.content
 
-print "Author @T3rry \n"
 #Upload_files_by_sha1_from_links('links.txt')
 #Upload_file_by_sha1('321AEB458C98643D5E5E4374C9D2ABFAAA4C6DA6','26984894148','1.mp4')
 #Upload_file_from_local("1.mp4")
@@ -251,3 +252,4 @@ if __name__ == '__main__':
 		Upload_file_from_local(filename)
 	else:
 		Upload_files_by_sha1_from_links(linksfile)
+		
