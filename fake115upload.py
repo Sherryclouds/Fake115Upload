@@ -87,8 +87,8 @@ def Upload_file_by_sha1(fileid,filesize,filename):  #quick
 				'target':target,
 				'fileid':fileid
 			  }
-	#r = requests.post(URL, data=postData,headers=header)
-	#print(r.text)
+	r = requests.post(URL, data=postData,headers=header)
+	print(r.text)
 
 def Upload_file_from_local(filename):  #slow
 	uri='http://uplb.115.com/3.0/sampleinitupload.php'
