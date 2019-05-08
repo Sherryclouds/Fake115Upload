@@ -17,9 +17,7 @@ app_ver='11.2.0'
 pickcode=""
 header = { "User-Agent" : 'Mozilla/5.0  115disk/11.2.0'}
 linksfile="115links.txt"
-##########################################################
-
-############################################################################################################
+#######################################################################
 def Upload_files_by_sha1_from_links(filename):  #link sample : 1.mp4|26984894148|21AEB458C98643D5E5E4374C9D2ABFAAA4C6DA6
 	GetUserKey()
 	for l in open(filename,'r'):
@@ -121,6 +119,5 @@ if __name__ == '__main__':
 		filename=sys.argv[1]
 		Upload_file_from_local(filename)
 	else:
-		pass
 		Upload_files_by_sha1_from_links(linksfile)
 		
