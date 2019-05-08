@@ -1,3 +1,6 @@
+
+__author__ = 'T3rry'
+
 import ctypes,os,sys
 import urllib2, urllib, cookielib
 import requests
@@ -43,7 +46,6 @@ def  build_hash(a):
 	return v1
    
 def dha(a):
-
 	v0 =[0]*len(a)*8
 	for i in range(0,len(v0),8):
 		v1=i>>5
@@ -147,9 +149,6 @@ def dhe(a):
 
 def get_signature (s):
 	return build_hash(dhaa(dha(s), len(s) * 8))
-
-
-
 #print "Signature:",sig
 
 ############################################################################################################
@@ -199,7 +198,6 @@ def AddCookie(cook):
 		name,value=line.strip().split('=',1)  
 		COOKIES[name]=value 
 
-
 def Upload_file_by_sha1(fileid,filesize,filename):  #quick
 	fileid=fileid.upper()
 	quickid=fileid
@@ -241,9 +239,7 @@ def Upload_file_from_local(filename):  #slow
                      		boundary='----WebKitFormBoundarya2JSh7swYU46OdJ0'
                     )
 	r = requests.post(resp['host'],headers=req_headers,data=m)
-
 	print r.content
-
 
 print "Author @T3rry \n"
 #Upload_files_by_sha1_from_links('links.txt')
