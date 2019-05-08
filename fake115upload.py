@@ -154,7 +154,6 @@ def get_signature (s):
 
 ############################################################################################################
 def Upload_files_by_sha1_from_links(filename):  #link sample : 1.mp4|26984894148|21AEB458C98643D5E5E4374C9D2ABFAAA4C6DA6
-
 	read_userkey_from_ini('config.ini')
 	for l in open(filename,'r'):
 		link=l.split('|')
