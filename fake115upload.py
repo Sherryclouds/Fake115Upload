@@ -26,7 +26,7 @@ def Upload_files_by_sha1_from_links(file):  #link sample : 1.mp4|26984894148|21A
 		link=l.split('|')
 		filename=link[0]
 		filesize=link[1]
-		fileid=link[2]
+		fileid=link[2].strip()
 		if(len(fileid)!=40):
 			print 'Error links'
 			return
